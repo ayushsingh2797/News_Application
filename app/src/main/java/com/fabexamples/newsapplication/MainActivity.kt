@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -28,6 +29,17 @@ class MainActivity : AppCompatActivity() {
         newsViewModel = ViewModelProviders.of(this).get(NewsViewModel::class.java)
         fetchDataFromServer()
         observeLiveData()
+        setClickListeners()
+    }
+
+    private fun setClickListeners() {
+       mainActivityBinding.tvError.setOnClickListener{
+           if(UtilityFunctions.isConnectingToInternet(applicationContext)){
+                fetchDataFromServer()
+           }
+           else
+               Toast.makeText(applicationContext,"Please check your internet",Toast.LENGTH_SHORT).show()
+       }
     }
 
     private fun observeLiveData() {
@@ -38,7 +50,8 @@ class MainActivity : AppCompatActivity() {
            }
            else {
                mainActivityBinding.rvNewsItems.visibility = View.GONE
-               mainActivityBinding.tvError.visibility = View.VISIBLE
+               mainActivityBinding.progressBar.visibility = View.GONE
+               mainActivityBinding.rlError.visibility = View.VISIBLE
            }
        })
     }
