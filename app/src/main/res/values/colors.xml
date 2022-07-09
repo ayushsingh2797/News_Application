@@ -11,4 +11,5 @@
     <color name="black_shade">#343832</color>
     <color name="grey">#424242</color>
     <color name="yellow">#ffa500</color>
+    <color name="hint_color">#8a8883</color>
 </resources>

@@ -11,7 +11,6 @@ class NewsModelRepo {
 
     private val BASE_URL = "https://api.npoint.io/"
     private var newsModelList = MutableLiveData<NewsModel>()
-    var  loginModel : LoginModel? = null
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
@@ -41,20 +40,4 @@ class NewsModelRepo {
 
     }
 
-    fun getLoginDetails() :  LoginModel? {
-
-        val call : Call<LoginModel> = apiInterface.getLoginDetails()
-        call.enqueue(object : Callback<LoginModel> {
-            override fun onResponse(call: Call<LoginModel?>, response: Response<LoginModel?>) {
-                if(response.body() != null) {
-                    val data : LoginModel = response.body() as LoginModel
-                    loginModel = data
-                }
-            }
-            override fun onFailure(call: Call<LoginModel?>, t: Throwable) {
-                loginModel = null
-            }
-        })
-        return loginModel
-    }
 }

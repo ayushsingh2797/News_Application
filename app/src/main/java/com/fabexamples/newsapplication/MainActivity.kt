@@ -14,7 +14,6 @@ import com.fabexamples.newsapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    //private val context : Context = applicationContext
     lateinit var newsRV :RecyclerView
     lateinit var mainActivityBinding: ActivityMainBinding
     lateinit var newsRVAdapter : NewsRVAdapter

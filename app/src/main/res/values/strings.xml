@@ -3,4 +3,8 @@
     <string name="news_app_toolbar_heading">News Feed</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="read_full_article">Read full Article</string>
+    <string name="news_app">NEWS APP</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
 </resources>
