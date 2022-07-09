@@ -4,10 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Android P/NewsApplication/app/src/main/res/drawable/ic_icons8_news.xml" value="0.1485" />
+        <entry key="..\:/Android P/NewsApplication/app/src/main/res/drawable/white_circle.xml" value="0.1485" />
         <entry key="..\:/Android P/NewsApplication/app/src/main/res/layout/activity_login.xml" value="0.17552083333333332" />
         <entry key="..\:/Android P/NewsApplication/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Android P/NewsApplication/app/src/main/res/layout/activity_news_complete.xml" value="0.22" />
         <entry key="..\:/Android P/NewsApplication/app/src/main/res/layout/news_rv_item.xml" value="0.17552083333333332" />
+        <entry key="..\:/Android P/NewsApplication/app/src/main/res/layout/progress_dialog.xml" value="0.17552083333333332" />
       </map>
     </option>
   </component>

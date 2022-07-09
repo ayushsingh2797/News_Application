@@ -1,9 +1,10 @@
 package com.fabexamples.newsapplication
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.fabexamples.newsapplication.databinding.ActivityLoginBinding
 import retrofit2.Call
@@ -11,13 +12,14 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.regex.Pattern
 
 class LoginActivity : AppCompatActivity(){
 
     lateinit var loginBinding: ActivityLoginBinding
     private lateinit var username :String
     private lateinit var email :String
-    var loginModel : LoginModel? = null
+    var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +28,7 @@ class LoginActivity : AppCompatActivity(){
 
     }
 
-    fun setClickListeners(){
+    private fun setClickListeners(){
         loginBinding.loginButton.setOnClickListener{
 
             username = loginBinding.etName.text.toString().trim()
@@ -40,6 +42,10 @@ class LoginActivity : AppCompatActivity(){
                 loginBinding.etEmail.error = "Email should not be empty"
                 loginBinding.etEmail.requestFocus()
             }
+            else if(!Pattern.compile(emailPattern).matcher(email).matches()){
+                loginBinding.etEmail.error = "Invalid email"
+                loginBinding.etEmail.requestFocus()
+            }
             else{
                 getLoginDetails()
             }
@@ -48,6 +54,8 @@ class LoginActivity : AppCompatActivity(){
 
     private fun getLoginDetails(){
 
+        loginBinding.loginProgress.visibility = View.VISIBLE
+        loginBinding.loginButton.visibility = View.GONE
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl("https://api.npoint.io/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -59,6 +67,7 @@ class LoginActivity : AppCompatActivity(){
         call.enqueue(object : Callback<LoginModel> {
             override fun onResponse(call: Call<LoginModel?>, response: Response<LoginModel?>) {
                 if(response.body() != null) {
+                    loginBinding.loginProgress.visibility = View.GONE
                     val data : LoginModel = response.body() as LoginModel
                     if(data.full_name == "Abhishek Singh" &&
                         data.token == "aa9b6f9f-408c-474b-9faa-811159697abc") {
@@ -71,6 +80,8 @@ class LoginActivity : AppCompatActivity(){
                 }
             }
             override fun onFailure(call: Call<LoginModel?>, t: Throwable) {
+                loginBinding.loginProgress.visibility = View.GONE
+                loginBinding.loginButton.visibility = View.VISIBLE
                 Toast.makeText(this@LoginActivity,"Error connecting to server",Toast.LENGTH_SHORT).show()
             }
         })

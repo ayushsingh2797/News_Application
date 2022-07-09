@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var newsRVAdapter : NewsRVAdapter
     lateinit var newsViewModel: NewsViewModel
     var articleList : List<Article>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivityBinding = DataBindingUtil.setContentView(this,R.layout.activity_main)
@@ -43,12 +44,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setAdapter(articleList: List<Article>) {
+        mainActivityBinding.progressBar.visibility = View.GONE
         newsRVAdapter = NewsRVAdapter(this,articleList)
         mainActivityBinding.rvNewsItems.adapter = newsRVAdapter
     }
 
     private fun fetchDataFromServer(){
         if(UtilityFunctions.isConnectingToInternet(applicationContext)){
+            mainActivityBinding.progressBar.visibility = View.VISIBLE
             newsViewModel.fetchNewsArticle()
         }
     }
