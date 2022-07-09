@@ -25,4 +25,8 @@ object UtilityFunctions {
         return false
     }
 
+    fun getDateFromString(str:String):String{
+        return str.substring(0, str.indexOf("T"))
+    }
+
 }

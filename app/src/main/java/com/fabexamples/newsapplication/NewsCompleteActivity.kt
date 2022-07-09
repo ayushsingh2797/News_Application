@@ -1,10 +1,13 @@
 package com.fabexamples.newsapplication
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.fabexamples.newsapplication.databinding.ActivityMainBinding
 import com.fabexamples.newsapplication.databinding.ActivityNewsCompleteBinding
@@ -20,6 +23,7 @@ class NewsCompleteActivity : AppCompatActivity() {
     private var url = ""
     private var publishedAt = ""
     var source = ""
+    var isLiked = false
     lateinit var newsCompleteBinding: ActivityNewsCompleteBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,11 +47,11 @@ class NewsCompleteActivity : AppCompatActivity() {
             }
             if (UtilityFunctions.checkIsNotNull(author)) {
                 it.tvAuthor.visibility = View.VISIBLE
-                it.tvAuthor.text = "Author: $author"
+                it.tvAuthor.text = author
             }
             if (UtilityFunctions.checkIsNotNull(publishedAt)) {
                 it.tvPublishedAt.visibility = View.VISIBLE
-                it.tvPublishedAt.text = "Date: $publishedAt"
+                it.tvPublishedAt.text = UtilityFunctions.getDateFromString(publishedAt)
             }
             if (UtilityFunctions.checkIsNotNull(content)){
                 it.tvCompleteContent.visibility= View.VISIBLE
@@ -56,11 +60,12 @@ class NewsCompleteActivity : AppCompatActivity() {
             if (UtilityFunctions.checkIsNotNull(url)){
                 it.btReadFullNews.visibility = View.VISIBLE
                 it.btReadFullNews.setOnClickListener{
-                    val intent:Intent = Intent(Intent.ACTION_VIEW)
+                    val intent = Intent(Intent.ACTION_VIEW)
                     intent.data = Uri.parse(url)
                     startActivity(intent)
                 }
             }
+            it.ivLikeBtn.isChecked = isLiked
         }
     }
 
@@ -74,6 +79,7 @@ class NewsCompleteActivity : AppCompatActivity() {
         publishedAt = intent?.getStringExtra("publishedAt").toString()
         source = intent?.getStringExtra("source").toString()
         content = intent?.getStringExtra("content").toString()
+        isLiked = intent?.getBooleanExtra("isLiked",false) == true
 
     }
 }

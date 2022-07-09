@@ -38,6 +38,10 @@ class LoginActivity : AppCompatActivity(){
                 loginBinding.etName.error ="Username should not be empty"
                 loginBinding.etName.requestFocus()
             }
+            else if(username.length<8){
+                loginBinding.etName.error = "Username must have 8 characters"
+                loginBinding.etName.requestFocus()
+            }
             else if(!UtilityFunctions.checkIsNotNull(email)){
                 loginBinding.etEmail.error = "Email should not be empty"
                 loginBinding.etEmail.requestFocus()
