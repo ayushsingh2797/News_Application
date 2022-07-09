@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">News</string>
+    <string name="news_app_toolbar_heading">News Feed</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="read_full_article">Read full Article</string>
+</resources>
