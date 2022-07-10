@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fabexamples.newsapplication.databinding.NewsRvItemBinding
 import com.squareup.picasso.Picasso
 
-class NewsRVAdapter(context: Context, articlesList: List<Article>?) :
+class NewsRVAdapter(context: Context, articlesList: List<Article>?,callback:AdapterListenerInterface) :
     RecyclerView.Adapter<NewsRVAdapter.ViewHolder>() {
 
     private var mArticlesList = articlesList
-    var mContext = context
+    var adapterListenerInterface = callback
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -50,7 +50,7 @@ class NewsRVAdapter(context: Context, articlesList: List<Article>?) :
 
             }
             itemView.setOnClickListener {
-                val intent = Intent(mContext, NewsCompleteActivity::class.java)
+                val intent = Intent()
                 intent.putExtra("url", item.url)
                 intent.putExtra("title", item.title)
                 intent.putExtra("author", item.author)
@@ -61,7 +61,7 @@ class NewsRVAdapter(context: Context, articlesList: List<Article>?) :
                 intent.putExtra("source", item.source.name)
                 intent.putExtra("position", position)
                 intent.putExtra("isLiked",item.isLiked)
-                mContext.startActivity(intent)
+                adapterListenerInterface.openCompleteNewsActivity(intent)
             }
         }
     }

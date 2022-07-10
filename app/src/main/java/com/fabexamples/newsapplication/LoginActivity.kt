@@ -51,7 +51,10 @@ class LoginActivity : AppCompatActivity(){
                 loginBinding.etEmail.requestFocus()
             }
             else{
-                getLoginDetails()
+                if(UtilityFunctions.isConnectingToInternet(this))
+                    getLoginDetails()
+                else
+                    Toast.makeText(this@LoginActivity,"Please check your internet connection",Toast.LENGTH_SHORT).show()
             }
         }
     }

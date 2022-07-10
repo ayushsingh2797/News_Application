@@ -1,15 +1,11 @@
 package com.fabexamples.newsapplication
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.fabexamples.newsapplication.databinding.ActivityMainBinding
 import com.fabexamples.newsapplication.databinding.ActivityNewsCompleteBinding
 import com.squareup.picasso.Picasso
 
@@ -24,6 +20,7 @@ class NewsCompleteActivity : AppCompatActivity() {
     private var publishedAt = ""
     var source = ""
     var isLiked = false
+    private var position  = -1
     lateinit var newsCompleteBinding: ActivityNewsCompleteBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +77,16 @@ class NewsCompleteActivity : AppCompatActivity() {
         source = intent?.getStringExtra("source").toString()
         content = intent?.getStringExtra("content").toString()
         isLiked = intent?.getBooleanExtra("isLiked",false) == true
+        position = intent?.getIntExtra("position",-1)!!
 
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent()
+        intent.putExtra("isLikedStatus",newsCompleteBinding.ivLikeBtn.isChecked)
+        intent.putExtra("position",position)
+        setResult(200,intent)
+        finish()
+        super.onBackPressed()
     }
 }

@@ -1,7 +1,7 @@
 package com.fabexamples.newsapplication
 
-import android.app.Activity
-import android.content.Context
+
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -13,13 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fabexamples.newsapplication.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AdapterListenerInterface {
 
     lateinit var newsRV :RecyclerView
     lateinit var mainActivityBinding: ActivityMainBinding
     lateinit var newsRVAdapter : NewsRVAdapter
     lateinit var newsViewModel: NewsViewModel
-    var articleList : List<Article>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +44,7 @@ class MainActivity : AppCompatActivity() {
     private fun observeLiveData() {
        newsViewModel.newsArticlesLiveData?.observe(this, Observer<NewsModel> { t->
            if(t!= null){
-               articleList = t.articles
-               setAdapter(articleList!!)
+               setAdapter(t.articles)
            }
            else {
                mainActivityBinding.rvNewsItems.visibility = View.GONE
@@ -58,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setAdapter(articleList: List<Article>) {
         mainActivityBinding.progressBar.visibility = View.GONE
-        newsRVAdapter = NewsRVAdapter(this,articleList)
+        newsRVAdapter = NewsRVAdapter(this,articleList,this)
         mainActivityBinding.rvNewsItems.adapter = newsRVAdapter
     }
 
@@ -67,5 +65,26 @@ class MainActivity : AppCompatActivity() {
             mainActivityBinding.progressBar.visibility = View.VISIBLE
             newsViewModel.fetchNewsArticle()
         }
+    }
+
+    override fun openCompleteNewsActivity(intent: Intent) {
+
+        val intent1 = Intent(this,NewsCompleteActivity::class.java)
+        intent1.putExtras(intent)
+        startActivityForResult(intent1,100)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode==100 && resultCode == 200 && data!=null){
+            if(data.hasExtra("isLikedStatus") && data.hasExtra("position")){
+                val position = data.getIntExtra("position",-1)
+                val isLikedStatus = data.getBooleanExtra("isLikedStatus",false)
+                if (position>=0) {
+                    newsViewModel.newsArticlesLiveData?.value?.articles?.get(position)?.isLiked = isLikedStatus
+                    newsRVAdapter.notifyItemChanged(position)
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }
